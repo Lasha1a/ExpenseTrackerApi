@@ -27,8 +27,4 @@
     <ProjectReference Include="..\ExpenseTracker.Application\ExpenseTracker.Application.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="DataBase\" />
-  </ItemGroup>
-
 </Project>
