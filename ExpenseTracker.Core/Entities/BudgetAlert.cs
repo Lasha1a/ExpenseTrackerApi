@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ExpenseTracker.Core.Entities;
 
-internal class BudgetAlert
+public class BudgetAlert
 {
     public Guid Id { get; set; }
 
