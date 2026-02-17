@@ -7,11 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ExpenseTracker.Infrastructure.DataBase.Configurations;
+namespace ExpenseTracker.Infrastructure.Persistence.Configurations;
 
 // This class configures the Category entity for Entity Framework Core,
 // specifying how it should be mapped to the database.
-public class CategoryConfigure : IEntityTypeConfiguration<Category> 
+public class CategoryConfigure : IEntityTypeConfiguration<Category>
 {
     public void Configure(EntityTypeBuilder<Category> builder) // This method is called by the Entity Framework Core runtime to configure the Category entity.
     {
@@ -27,7 +27,7 @@ public class CategoryConfigure : IEntityTypeConfiguration<Category>
             .HasMaxLength(7);
 
         builder.Property(x => x.MonthlyBudget)
-            .HasPrecision(10,2);
+            .HasPrecision(10, 2);
 
         builder.Property(x => x.IsActive)
             .HasDefaultValue(true);
@@ -37,7 +37,7 @@ public class CategoryConfigure : IEntityTypeConfiguration<Category>
             .HasForeignKey(x => x.UserId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasIndex(x => new {x.UserId, x.Name }) // This creates a unique index on the combination of UserId and Name, ensuring that a user cannot have two categories with the same name.
+        builder.HasIndex(x => new { x.UserId, x.Name }) // This creates a unique index on the combination of UserId and Name, ensuring that a user cannot have two categories with the same name.
             .IsUnique();
     }
 }

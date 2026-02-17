@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ExpenseTracker.Core.Entities;
 
-internal class ReportJob
+public class ReportJob
 {
     public Guid Id { get; set; }
     

@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ExpenseTracker.Infrastructure.DataBase.Configurations;
+namespace ExpenseTracker.Infrastructure.Persistence.Configurations;
 
 // This class configures the Expense entity for Entity Framework Core
 public class ExpenseConfiguration : IEntityTypeConfiguration<Expense>
@@ -21,7 +21,7 @@ public class ExpenseConfiguration : IEntityTypeConfiguration<Expense>
         builder.Property(x => x.Amount)
             .HasPrecision(10, 2)
             .IsRequired();
-        
+
         builder.Property(x => x.Description)
             .HasMaxLength(500);
 

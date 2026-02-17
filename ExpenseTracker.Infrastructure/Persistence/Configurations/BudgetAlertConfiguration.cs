@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ExpenseTracker.Infrastructure.DataBase.Configurations;
+namespace ExpenseTracker.Infrastructure.Persistence.Configurations;
 
 // This class configures the BudgetAlert entity for Entity Framework Core
 public class BudgetAlertConfiguration : IEntityTypeConfiguration<BudgetAlert>
@@ -38,7 +38,7 @@ public class BudgetAlertConfiguration : IEntityTypeConfiguration<BudgetAlert>
             .HasForeignKey(x => x.CategoryId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasIndex(x => new {x.UserId, x.CategoryId, x.Month }) // This creates a unique index on the combination of UserId, CategoryId, and Month, ensuring that a user cannot have multiple budget alerts for the same category and month.
-            .IsUnique();    
+        builder.HasIndex(x => new { x.UserId, x.CategoryId, x.Month }) // This creates a unique index on the combination of UserId, CategoryId, and Month, ensuring that a user cannot have multiple budget alerts for the same category and month.
+            .IsUnique();
     }
 }
