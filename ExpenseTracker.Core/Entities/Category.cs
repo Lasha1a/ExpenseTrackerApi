@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ExpenseTracker.Core.Entities;
 
-internal class Category
+public class Category
 {
     public Guid Id { get; set; }
 
