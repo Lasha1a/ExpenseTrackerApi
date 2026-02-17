@@ -1,10 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "VTogY6Pcmfg=",
+  "dgSpecHash": "XXR/JUJPXu0=",
   "success": true,
   "projectFilePath": "C:\\Users\\lasha\\source\\repos\\ExpenseTrackerApi\\ExpenseTrackerApi\\ExpenseTrackerApi.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\lasha\\.nuget\\packages\\microsoft.aspnetcore.openapi\\9.0.6\\microsoft.aspnetcore.openapi.9.0.6.nupkg.sha512",
+    "C:\\Users\\lasha\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\10.0.3\\microsoft.extensions.dependencyinjection.abstractions.10.0.3.nupkg.sha512",
     "C:\\Users\\lasha\\.nuget\\packages\\microsoft.openapi\\1.6.17\\microsoft.openapi.1.6.17.nupkg.sha512"
   ],
   "logs": []

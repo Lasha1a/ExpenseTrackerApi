@@ -17,6 +17,19 @@
         "build": {
           "buildTransitive/net8.0/_._": {}
         }
+      },
+      "ExpenseTracker.Core/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v9.0",
+        "dependencies": {
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "10.0.3"
+        },
+        "compile": {
+          "bin/placeholder/ExpenseTracker.Core.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/ExpenseTracker.Core.dll": {}
+        }
       }
     }
   },
@@ -51,10 +64,16 @@
         "microsoft.extensions.dependencyinjection.abstractions.nuspec",
         "useSharedDesignerContext.txt"
       ]
+    },
+    "ExpenseTracker.Core/1.0.0": {
+      "type": "project",
+      "path": "../ExpenseTracker.Core/ExpenseTracker.Core.csproj",
+      "msbuildProject": "../ExpenseTracker.Core/ExpenseTracker.Core.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net9.0": [
+      "ExpenseTracker.Core >= 1.0.0",
       "Microsoft.Extensions.DependencyInjection.Abstractions >= 10.0.3"
     ]
   },
@@ -89,7 +108,11 @@
       "frameworks": {
         "net9.0": {
           "targetAlias": "net9.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Users\\lasha\\source\\repos\\ExpenseTrackerApi\\ExpenseTracker.Core\\ExpenseTracker.Core.csproj": {
+              "projectPath": "C:\\Users\\lasha\\source\\repos\\ExpenseTrackerApi\\ExpenseTracker.Core\\ExpenseTracker.Core.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

@@ -17,6 +17,33 @@
         "build": {
           "buildTransitive/net8.0/_._": {}
         }
+      },
+      "ExpenseTracker.Application/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v9.0",
+        "dependencies": {
+          "ExpenseTracker.Core": "1.0.0",
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "10.0.3"
+        },
+        "compile": {
+          "bin/placeholder/ExpenseTracker.Application.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/ExpenseTracker.Application.dll": {}
+        }
+      },
+      "ExpenseTracker.Core/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v9.0",
+        "dependencies": {
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "10.0.3"
+        },
+        "compile": {
+          "bin/placeholder/ExpenseTracker.Core.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/ExpenseTracker.Core.dll": {}
+        }
       }
     }
   },
@@ -51,10 +78,21 @@
         "microsoft.extensions.dependencyinjection.abstractions.nuspec",
         "useSharedDesignerContext.txt"
       ]
+    },
+    "ExpenseTracker.Application/1.0.0": {
+      "type": "project",
+      "path": "../ExpenseTracker.Application/ExpenseTracker.Application.csproj",
+      "msbuildProject": "../ExpenseTracker.Application/ExpenseTracker.Application.csproj"
+    },
+    "ExpenseTracker.Core/1.0.0": {
+      "type": "project",
+      "path": "../ExpenseTracker.Core/ExpenseTracker.Core.csproj",
+      "msbuildProject": "../ExpenseTracker.Core/ExpenseTracker.Core.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net9.0": [
+      "ExpenseTracker.Application >= 1.0.0",
       "Microsoft.Extensions.DependencyInjection.Abstractions >= 10.0.3"
     ]
   },
@@ -89,7 +127,11 @@
       "frameworks": {
         "net9.0": {
           "targetAlias": "net9.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Users\\lasha\\source\\repos\\ExpenseTrackerApi\\ExpenseTracker.Application\\ExpenseTracker.Application.csproj": {
+              "projectPath": "C:\\Users\\lasha\\source\\repos\\ExpenseTrackerApi\\ExpenseTracker.Application\\ExpenseTracker.Application.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

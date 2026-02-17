@@ -9,7 +9,7 @@ namespace ExpenseTracker.Core;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddCore(this IServiceCollection services)
+    public static IServiceCollection AddCoreDI(this IServiceCollection services)
     {
         return services;
     }

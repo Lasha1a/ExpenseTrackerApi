@@ -21,6 +21,22 @@
           "Microsoft.AspNetCore.App"
         ]
       },
+      "Microsoft.Extensions.DependencyInjection.Abstractions/10.0.3": {
+        "type": "package",
+        "compile": {
+          "lib/net9.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net9.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll": {
+            "related": ".xml"
+          }
+        },
+        "build": {
+          "buildTransitive/net8.0/_._": {}
+        }
+      },
       "Microsoft.OpenApi/1.6.17": {
         "type": "package",
         "compile": {
@@ -32,6 +48,47 @@
           "lib/netstandard2.0/Microsoft.OpenApi.dll": {
             "related": ".pdb;.xml"
           }
+        }
+      },
+      "ExpenseTracker.Application/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v9.0",
+        "dependencies": {
+          "ExpenseTracker.Core": "1.0.0",
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "10.0.3"
+        },
+        "compile": {
+          "bin/placeholder/ExpenseTracker.Application.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/ExpenseTracker.Application.dll": {}
+        }
+      },
+      "ExpenseTracker.Core/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v9.0",
+        "dependencies": {
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "10.0.3"
+        },
+        "compile": {
+          "bin/placeholder/ExpenseTracker.Core.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/ExpenseTracker.Core.dll": {}
+        }
+      },
+      "ExpenseTracker.Infrastructure/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v9.0",
+        "dependencies": {
+          "ExpenseTracker.Application": "1.0.0",
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "10.0.3"
+        },
+        "compile": {
+          "bin/placeholder/ExpenseTracker.Infrastructure.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/ExpenseTracker.Infrastructure.dll": {}
         }
       }
     }
@@ -53,6 +110,37 @@
         "microsoft.aspnetcore.openapi.nuspec"
       ]
     },
+    "Microsoft.Extensions.DependencyInjection.Abstractions/10.0.3": {
+      "sha512": "bwGMrRcAMWx2s/RDgja97p27rxSz2pEQW0+rX5cWAUWVETVJ/eyxGfjAl8vuG5a+lckWmPIE+vcuaZNVB5YDdw==",
+      "type": "package",
+      "path": "microsoft.extensions.dependencyinjection.abstractions/10.0.3",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "PACKAGE.md",
+        "THIRD-PARTY-NOTICES.TXT",
+        "buildTransitive/net461/Microsoft.Extensions.DependencyInjection.Abstractions.targets",
+        "buildTransitive/net462/_._",
+        "buildTransitive/net8.0/_._",
+        "buildTransitive/netcoreapp2.0/Microsoft.Extensions.DependencyInjection.Abstractions.targets",
+        "lib/net10.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll",
+        "lib/net10.0/Microsoft.Extensions.DependencyInjection.Abstractions.xml",
+        "lib/net462/Microsoft.Extensions.DependencyInjection.Abstractions.dll",
+        "lib/net462/Microsoft.Extensions.DependencyInjection.Abstractions.xml",
+        "lib/net8.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll",
+        "lib/net8.0/Microsoft.Extensions.DependencyInjection.Abstractions.xml",
+        "lib/net9.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll",
+        "lib/net9.0/Microsoft.Extensions.DependencyInjection.Abstractions.xml",
+        "lib/netstandard2.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll",
+        "lib/netstandard2.0/Microsoft.Extensions.DependencyInjection.Abstractions.xml",
+        "lib/netstandard2.1/Microsoft.Extensions.DependencyInjection.Abstractions.dll",
+        "lib/netstandard2.1/Microsoft.Extensions.DependencyInjection.Abstractions.xml",
+        "microsoft.extensions.dependencyinjection.abstractions.10.0.3.nupkg.sha512",
+        "microsoft.extensions.dependencyinjection.abstractions.nuspec",
+        "useSharedDesignerContext.txt"
+      ]
+    },
     "Microsoft.OpenApi/1.6.17": {
       "sha512": "Le+kehlmrlQfuDFUt1zZ2dVwrhFQtKREdKBo+rexOwaCoYP0/qpgT9tLxCsZjsgR5Itk1UKPcbgO+FyaNid/bA==",
       "type": "package",
@@ -67,10 +155,27 @@
         "microsoft.openapi.1.6.17.nupkg.sha512",
         "microsoft.openapi.nuspec"
       ]
+    },
+    "ExpenseTracker.Application/1.0.0": {
+      "type": "project",
+      "path": "../ExpenseTracker.Application/ExpenseTracker.Application.csproj",
+      "msbuildProject": "../ExpenseTracker.Application/ExpenseTracker.Application.csproj"
+    },
+    "ExpenseTracker.Core/1.0.0": {
+      "type": "project",
+      "path": "../ExpenseTracker.Core/ExpenseTracker.Core.csproj",
+      "msbuildProject": "../ExpenseTracker.Core/ExpenseTracker.Core.csproj"
+    },
+    "ExpenseTracker.Infrastructure/1.0.0": {
+      "type": "project",
+      "path": "../ExpenseTracker.Infrastructure/ExpenseTracker.Infrastructure.csproj",
+      "msbuildProject": "../ExpenseTracker.Infrastructure/ExpenseTracker.Infrastructure.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net9.0": [
+      "ExpenseTracker.Application >= 1.0.0",
+      "ExpenseTracker.Infrastructure >= 1.0.0",
       "Microsoft.AspNetCore.OpenApi >= 9.0.6"
     ]
   },
@@ -105,7 +210,14 @@
       "frameworks": {
         "net9.0": {
           "targetAlias": "net9.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Users\\lasha\\source\\repos\\ExpenseTrackerApi\\ExpenseTracker.Application\\ExpenseTracker.Application.csproj": {
+              "projectPath": "C:\\Users\\lasha\\source\\repos\\ExpenseTrackerApi\\ExpenseTracker.Application\\ExpenseTracker.Application.csproj"
+            },
+            "C:\\Users\\lasha\\source\\repos\\ExpenseTrackerApi\\ExpenseTracker.Infrastructure\\ExpenseTracker.Infrastructure.csproj": {
+              "projectPath": "C:\\Users\\lasha\\source\\repos\\ExpenseTrackerApi\\ExpenseTracker.Infrastructure\\ExpenseTracker.Infrastructure.csproj"
+            }
+          }
         }
       },
       "warningProperties": {
