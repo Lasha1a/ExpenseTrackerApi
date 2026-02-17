@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "V5St/9oPEts=",
+  "dgSpecHash": "+nzJUohPYjY=",
   "success": true,
   "projectFilePath": "C:\\Users\\lasha\\source\\repos\\ExpenseTrackerApi\\ExpenseTracker.Infrastructure\\ExpenseTracker.Infrastructure.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\lasha\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\10.0.3\\microsoft.extensions.dependencyinjection.abstractions.10.0.3.nupkg.sha512"
+  ],
   "logs": []
 }
