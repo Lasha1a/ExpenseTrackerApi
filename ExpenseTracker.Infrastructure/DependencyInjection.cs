@@ -4,6 +4,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.EntityFrameworkCore;
+using ExpenseTracker.Infrastructure.Repositories;
+using ExpenseTracker.Application.Interfaces.Repositories;
 
 
 namespace ExpenseTracker.Infrastructure;
@@ -17,6 +19,8 @@ public static class DependencyInjection
         {
             options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"));
         });
+
+        services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
 
         return services;
     }
