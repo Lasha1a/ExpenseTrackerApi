@@ -5,10 +5,10 @@ namespace ExpenseTrackerApi;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddMainApiDI(this IServiceCollection services)
+    public static IServiceCollection AddMainApiDI(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddApplicationDI()
-            .AddInfrastructureDI();
+            .AddInfrastructureDI(configuration);
 
 
         return services;
