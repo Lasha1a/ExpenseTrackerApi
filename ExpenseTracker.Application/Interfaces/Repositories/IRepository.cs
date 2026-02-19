@@ -1,4 +1,5 @@
 ﻿using ExpenseTracker.Core.common;
+using ExpenseTracker.Application.Specifications;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,5 +16,5 @@ public interface IRepository<T> where T : EntityBase
     Task AddAsync(T entity);
     void Update(T entity);
     void Delete(T entity);
-    Task<int> CountAsync(ISpecification<T> specification);
+    Task<int> CountAsyncISpecification<T> specification);
 }

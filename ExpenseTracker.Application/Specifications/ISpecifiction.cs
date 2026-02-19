@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ExpenseTracker.Application.Specifications;
 
-public interface ISpecifiction<T>
+public interface ISpecification<T>
 {
     Expression<Func<T, bool>>? Criteria { get; } 
     List<Expression<Func<T, object>>> Includes { get; }
