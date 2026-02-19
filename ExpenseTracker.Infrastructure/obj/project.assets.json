@@ -3571,6 +3571,7 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v9.0",
         "dependencies": {
+          "Microsoft.Extensions.Configuration.Abstractions": "9.0.13",
           "Microsoft.Extensions.DependencyInjection.Abstractions": "10.0.3"
         },
         "compile": {

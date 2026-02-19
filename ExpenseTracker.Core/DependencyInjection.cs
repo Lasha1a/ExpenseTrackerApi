@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,8 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddCoreDI(this IServiceCollection services)
     {
+        
+
         return services;
     }
 }
