@@ -1,4 +1,5 @@
 ﻿using ExpenseTracker.Application;
+using ExpenseTracker.Application.Services.ExpenseServices;
 using ExpenseTracker.Infrastructure;
 
 namespace ExpenseTrackerApi;
@@ -9,6 +10,8 @@ public static class DependencyInjection
     {
         services.AddApplicationDI()
             .AddInfrastructureDI(configuration);
+
+        services.AddScoped<ExpenseService>(); // Register ExpenseService (use case)
 
 
         return services;
