@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ExpenseTracker.Application.DTOs.CategoriesDtos;
 
-internal class CategoryResponse
+public class CategoryResponse
 {
     public Guid Id { get; init; }
     public string Name { get; init; } = null!;

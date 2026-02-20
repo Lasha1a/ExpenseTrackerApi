@@ -37,7 +37,16 @@ public class CategoryController : ControllerBase
         {
             return NotFound();
         }
-        return Ok(category);
+        var response = new CategoryResponse
+        {
+            Id = category.Id,
+            Name = category.Name,
+            ColorHex = category.ColorHex,
+            MonthlyBudget = category.MonthlyBudget,
+            IsActive = category.IsActive
+        };
+
+        return Ok(response);
     }
 
     //update
