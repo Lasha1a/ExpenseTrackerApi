@@ -1,4 +1,4 @@
-﻿using ExpenseTracker.Application.Expenses.DTOs;
+﻿using ExpenseTracker.Application.DTOs.ExpenseDtos;
 using ExpenseTracker.Application.Services.ExpenseServices;
 using ExpenseTracker.Infrastructure.DataBase;
 using Microsoft.AspNetCore.Http;

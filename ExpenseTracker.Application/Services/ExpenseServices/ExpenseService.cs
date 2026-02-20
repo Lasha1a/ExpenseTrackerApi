@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ExpenseTracker.Core.Entities;
-using ExpenseTracker.Application.Expenses.DTOs;
+using ExpenseTracker.Application.DTOs.ExpenseDtos;
 
 namespace ExpenseTracker.Application.Services.ExpenseServices;
 

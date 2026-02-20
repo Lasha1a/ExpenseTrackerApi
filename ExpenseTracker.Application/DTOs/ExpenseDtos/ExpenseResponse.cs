@@ -4,10 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ExpenseTracker.Application.Expenses.DTOs;
+namespace ExpenseTracker.Application.DTOs.ExpenseDtos;
 
-public class CreateExpenseRequest
+internal class ExpenseResponse //for get/list responses
 {
+    public Guid Id { get; init; }
+
     public Guid UserId { get; init; }
     public Guid CategoryId { get; init; }
 
@@ -15,4 +17,6 @@ public class CreateExpenseRequest
     public string? Description { get; init; }
     public DateTime ExpenseDate { get; init; }
 
+    public DateTime CreatedAt { get; init; }
+    public DateTime? UpdatedAt { get; init; }
 }
