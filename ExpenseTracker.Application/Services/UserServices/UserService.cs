@@ -1,6 +1,7 @@
 ﻿using ExpenseTracker.Application.DTOs.UserDtos;
 using ExpenseTracker.Application.Interfaces.Repositories;
 using ExpenseTracker.Application.Interfaces.Security;
+using ExpenseTracker.Application.Specifications;
 using ExpenseTracker.Core.Entities;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace ExpenseTracker.Application.Services.UserServices;
 
-internal class UserService
+public class UserService
 {
     private readonly IRepository<User> _repository;
     private readonly IPasswordHasher _passwordHasher;
@@ -47,7 +48,16 @@ internal class UserService
     //login
     public async Task<User?> LoginAsync(LoginRequest request)
     {
-        var user = await _repository
-            .FirstDefaultAsync(u => u.Email == request.Email);
+        var spec = new UserByEmailSpec(request.Email);
+
+        var users = await _repository.ListAsync(spec);
+
+        var user = users.FirstOrDefault();
+        if (user is null) 
+            return null;
+
+        var isValid = _passwordHasher.Verify(request.Password, user.PasswordHash);
+
+        return isValid ? user : null;
     }
 }

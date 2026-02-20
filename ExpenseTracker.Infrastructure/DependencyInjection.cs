@@ -6,6 +6,9 @@ using Microsoft.Extensions.Options;
 using Microsoft.EntityFrameworkCore;
 using ExpenseTracker.Infrastructure.Repositories;
 using ExpenseTracker.Application.Interfaces.Repositories;
+using ExpenseTracker.Application.Interfaces.Security;
+using Microsoft.AspNetCore.Identity;
+using ExpenseTracker.Infrastructure.Repositories.Security;
 
 
 namespace ExpenseTracker.Infrastructure;
@@ -21,6 +24,7 @@ public static class DependencyInjection
         });
 
         services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
+        services.AddScoped<IPasswordHasher, AppPasswordHasher>();
 
         return services;
     }
