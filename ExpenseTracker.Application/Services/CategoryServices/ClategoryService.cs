@@ -8,12 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace ExpenseTracker.Application.Services.CategoryServices;
-
-public class ClategoryService
+public class CategoryService
 {
     private readonly IRepository<Category> _repository;
 
-    public ClategoryService(IRepository<Category> repository)
+    public CategoryService(IRepository<Category> repository)
     {
         _repository = repository;
     }

@@ -1,4 +1,5 @@
 ﻿using ExpenseTracker.Application;
+using ExpenseTracker.Application.Services.CategoryServices;
 using ExpenseTracker.Application.Services.ExpenseServices;
 using ExpenseTracker.Application.Services.UserServices;
 using ExpenseTracker.Infrastructure;
@@ -14,6 +15,7 @@ public static class DependencyInjection
 
         services.AddScoped<ExpenseService>(); // Register ExpenseService (use case)
         services.AddScoped<UserService>(); // Register UserService (use case)
+        services.AddScoped<CategoryService>(); // Register CategoryService (use case)
 
 
         return services;
