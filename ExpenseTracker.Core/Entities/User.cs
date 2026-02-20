@@ -12,6 +12,8 @@ public class User : EntityBase
     public string Email { get; set; } = null!;
     public string FullName { get; set; } = null!;
     public string CurrencyCode { get; set; } = "USD";
+
+    public string PasswordHash { get; set; } = null!; 
     public DateTime CreatedAt { get; set; }
     
 
