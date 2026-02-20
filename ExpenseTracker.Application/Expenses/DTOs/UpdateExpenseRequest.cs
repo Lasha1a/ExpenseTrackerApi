@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ExpenseTracker.Application.Expenses.DTOs;
 
-internal class UpdateExpenseRequest
+public class UpdateExpenseRequest
 {
     public decimal Amount { get; init; }
     public string? Description { get; init; }

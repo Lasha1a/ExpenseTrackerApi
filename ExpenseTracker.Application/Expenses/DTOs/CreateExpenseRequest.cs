@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ExpenseTracker.Application.Expenses.DTOs;
 
-internal class CreateExpenseRequest
+public class CreateExpenseRequest
 {
     public Guid UserId { get; init; }
     public Guid CategoryId { get; init; }
