@@ -68,10 +68,8 @@ internal class GenericRepository<T> : IRepository<T> where T : EntityBase
             query = query.OrderByDescending(specification.OrderByDescending);
         }
 
-        if(specification.IsPagingEnabled) // If pagination is enabled, we apply the Skip and Take methods to the query to return only the specified page of results.
-        {
+        if (specification.IsPagingEnabled)
             query = query.Skip(specification.Skip!.Value).Take(specification.Take!.Value);
-        }
 
         return query;
     }

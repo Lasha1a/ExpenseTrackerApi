@@ -64,7 +64,7 @@ public class ExpenseController : ControllerBase
     }
 
     //list with pagination and filtering endpoint
-    [HttpGet]
+    [HttpGet("List")]
     public async Task<IActionResult> List([FromQuery] ExpenseListQuery query)
     {
         var expenses = await _expenseService.ListAsync(query);
@@ -72,13 +72,10 @@ public class ExpenseController : ControllerBase
         var response = expenses.Select(e => new ExpenseResponse
         {
             Id = e.Id,
-            UserId = e.UserId,
-            CategoryId = e.CategoryId,
             Amount = e.Amount,
             Description = e.Description,
             ExpenseDate = e.ExpenseDate,
-            CreatedAt = e.CreatedAt,
-            UpdatedAt = e.UpdatedAt,
+            CategoryId = e.CategoryId,
             CategoryName = e.Category.Name
         });
 
