@@ -1,8 +1,10 @@
-﻿using ExpenseTracker.Application.DTOs.ExpenseDtos;
+﻿using ExpenseTracker.Application.DTOs.CSV;
+using ExpenseTracker.Application.DTOs.ExpenseDtos;
 using ExpenseTracker.Application.Services.ExpenseServices;
 using ExpenseTracker.Infrastructure.DataBase;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Globalization;
 
 namespace ExpenseTrackerApi.Controllers;
 
@@ -81,4 +83,55 @@ public class ExpenseController : ControllerBase
 
         return Ok(response);
     }
+
+
+    //import from csv endpoint
+
+    [HttpPost("import/csv")]
+    public async Task<IActionResult> ImportCsv([FromQuery] Guid userId,IFormFile file)
+    {
+        if (file == null || file.Length == 0) // check if file is null or empty
+            return BadRequest("File is empty");
+
+        var rows = new List<CsvExpenseRow>(); // list to hold parsed CSV rows
+
+        using var reader = new StreamReader(file.OpenReadStream()); // create a stream reader to read the uploaded file
+        string? line; // variable to hold each line read from the CSV
+        bool isHeader = true; // flag to skip the header row
+
+        while ((line = reader.ReadLine()) != null) // read each line until the end of the file
+        {
+            if (isHeader)
+            {
+                isHeader = false;
+                continue;
+            }
+
+            var parts = line.Split(','); // split the line into parts based on comma delimiter
+
+            rows.Add(new CsvExpenseRow // create a new CsvExpenseRow object and add it to the list
+            {
+                Amount = decimal.Parse(parts[0], CultureInfo.InvariantCulture),
+                Description = parts[1],
+                ExpenseDate = DateTime.Parse(parts[2], CultureInfo.InvariantCulture),
+                CategoryName = parts[3]
+            });
+        }
+
+        // load categories for user
+        var categories = _context.Categories
+            .Where(c => c.UserId == userId && c.IsActive)
+            .ToList();
+
+        var importedCount = await _expenseService // call the service method to import expenses from CSV, passing the user ID, parsed rows, and categories
+            .ImportFromCsvAsync(userId, rows, categories);
+
+        await _context.SaveChangesAsync();
+
+        return Ok(new // return the count of imported expenses in the response
+        {
+            imported = importedCount
+        });
+    }
+
 }

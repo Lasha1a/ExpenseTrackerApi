@@ -92,16 +92,16 @@ public class ExpenseService
         return await _repository.ListAsync(spec);
     }
 
-
+    //import from csv
     public async Task<int> ImportFromCsvAsync(Guid userId, IEnumerable<CsvExpenseRow> rows, 
         IEnumerable<Category> categories)
     {
-        var categoryLookup = categories
+        var categoryLookup = categories // Create a lookup dictionary for category names to IDs, ignoring case
             .ToDictionary(c => c.Name.ToLower(), c => c.Id);
 
         var expenses = new List<Expense>();
 
-        foreach (var row in rows)
+        foreach (var row in rows) // Iterate through each CSV row
         {
             if(!categoryLookup.TryGetValue(row.CategoryName.ToLower(), out var categoryId))
             {
