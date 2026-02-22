@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ExpenseTracker.Application.DTOs.ExpenseDtos;
 
-internal class ExpenseListQuery //for list/getall requests with filtering, pagination, sorting used w specifications
+public class ExpenseListQuery //for list/getall requests with filtering, pagination, sorting used w specifications
 {
     public Guid UserId { get; init; }
 

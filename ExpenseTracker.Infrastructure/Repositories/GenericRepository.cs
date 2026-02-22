@@ -46,6 +46,7 @@ internal class GenericRepository<T> : IRepository<T> where T : EntityBase
        _context.Set<T>().Update(entity);
 
 
+    //private method to apply specifications to the queryable set of entities. This method is used by the ListAsync and CountAsync methods to filter, include related entities, and order the results based on the provided specification.
     private IQueryable<T> ApplySpecification(ISpecification<T> specification)
     {
         IQueryable<T> query = _context.Set<T>();

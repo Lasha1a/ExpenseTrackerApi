@@ -23,6 +23,11 @@ public abstract class BaseSpecification<T> : ISpecification<T>
     public Expression<Func<T, object>>? OrderBy { get; private set; }
     public Expression<Func<T, object>>? OrderByDescending { get; private set; }
 
+    //paging
+    public int? Skip { get; private set; }
+    public int? Take { get; private set; }
+    public bool IsPagingEnabled { get; private set; }
+
     protected void AddInclude(Expression<Func<T, object>> include) // This method allows us to add related entities to include in the query results
     {
         Includes.Add(include);
@@ -36,6 +41,14 @@ public abstract class BaseSpecification<T> : ISpecification<T>
     protected void ApplyOrderByDescending(Expression<Func<T, object>> orderByDescending) // This method allows us to specify the ordering of the query results in descending order
     {
         OrderByDescending = orderByDescending;
-    }   
+    }
+
+    // This method allows us to specify pagination parameters for the query results
+    protected void ApplyPaging(int skip, int take)
+    {
+        Skip = skip;
+        Take = take;
+        IsPagingEnabled = true;
+    }
 
 }
