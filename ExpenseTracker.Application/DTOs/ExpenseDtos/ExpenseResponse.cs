@@ -12,9 +12,10 @@ internal class ExpenseResponse //for get/list responses
 
     public Guid UserId { get; init; }
     public Guid CategoryId { get; init; }
+    public string CategoryName { get; init; } = null!;
 
     public decimal Amount { get; init; }
-    public string? Description { get; init; }
+    public string Description { get; init; } = null!;
     public DateTime ExpenseDate { get; init; }
 
     public DateTime CreatedAt { get; init; }

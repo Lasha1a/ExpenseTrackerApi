@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ExpenseTracker.Core.Entities;
 using ExpenseTracker.Application.DTOs.ExpenseDtos;
+using ExpenseTracker.Application.Specifications;
 
 namespace ExpenseTracker.Application.Services.ExpenseServices;
 
@@ -81,5 +82,12 @@ public class ExpenseService
             throw new KeyNotFoundException("Expense not found.");
         }
         _repository.Delete(expense);
+    }
+
+    //list with filtering, pagination, and sorting
+    public async Task<IReadOnlyList<Expense>> ListAsync(ExpenseListQuery query)
+    {
+        var spec = new ExpensesListSpec(query);
+        return await _repository.ListAsync(spec);
     }
 }
