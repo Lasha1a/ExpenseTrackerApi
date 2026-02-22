@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using ExpenseTracker.Core.Entities;
 using ExpenseTracker.Application.DTOs.ExpenseDtos;
 using ExpenseTracker.Application.Specifications;
+using ExpenseTracker.Application.DTOs.CSV;
 
 namespace ExpenseTracker.Application.Services.ExpenseServices;
 
@@ -89,5 +90,40 @@ public class ExpenseService
     {
         var spec = new ExpensesListSpec(query);
         return await _repository.ListAsync(spec);
+    }
+
+
+    public async Task<int> ImportFromCsvAsync(Guid userId, IEnumerable<CsvExpenseRow> rows, 
+        IEnumerable<Category> categories)
+    {
+        var categoryLookup = categories
+            .ToDictionary(c => c.Name.ToLower(), c => c.Id);
+
+        var expenses = new List<Expense>();
+
+        foreach (var row in rows)
+        {
+            if(!categoryLookup.TryGetValue(row.CategoryName.ToLower(), out var categoryId))
+            {
+                continue; // Skip rows with unknown categories
+            }
+
+            expenses.Add(new Expense
+            {
+                UserId = userId,
+                CategoryId = categoryId,
+                Amount = row.Amount,
+                Description = row.Description,
+                ExpenseDate = row.ExpenseDate,
+                CreatedAt = DateTime.UtcNow
+            });
+        }
+
+        foreach (var expense in expenses)
+        {
+            await _repository.AddAsync(expense);
+        }
+
+        return expenses.Count;
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ExpenseTracker.Application.DTOs.CSV;
 
-internal class CsvExpenseRow
+public class CsvExpenseRow
 {
     public decimal Amount { get; init; }
     public string Description { get; init; } = null!;
