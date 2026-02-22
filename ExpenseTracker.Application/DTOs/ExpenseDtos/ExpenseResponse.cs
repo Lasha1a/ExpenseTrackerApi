@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ExpenseTracker.Application.DTOs.ExpenseDtos;
 
-internal class ExpenseResponse //for get/list responses
+public class ExpenseResponse //for get/list responses
 {
     public Guid Id { get; init; }
 

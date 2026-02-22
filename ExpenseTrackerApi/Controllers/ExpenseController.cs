@@ -62,4 +62,26 @@ public class ExpenseController : ControllerBase
         await _context.SaveChangesAsync();
         return NoContent();
     }
+
+    //list with pagination and filtering endpoint
+    [HttpGet]
+    public async Task<IActionResult> List([FromQuery] ExpenseListQuery query)
+    {
+        var expenses = await _expenseService.ListAsync(query);
+
+        var response = expenses.Select(e => new ExpenseResponse
+        {
+            Id = e.Id,
+            UserId = e.UserId,
+            CategoryId = e.CategoryId,
+            Amount = e.Amount,
+            Description = e.Description,
+            ExpenseDate = e.ExpenseDate,
+            CreatedAt = e.CreatedAt,
+            UpdatedAt = e.UpdatedAt,
+            CategoryName = e.Category.Name
+        });
+
+        return Ok(response);
+    }
 }
