@@ -1,4 +1,4 @@
 amount,description,expenseDate,categoryName
-85.5,Fuel refill,2024-03-01,Toys
-12.0,Coffee,2024-03-02,Food
-40.0,Groceries,2024-03-03,Food
+85.5,Fuel refill,2024-03-01,toys
+120.0,Oil change,2024-03-05,cars
+400.0,Car parts,2024-03-10,BigCars
