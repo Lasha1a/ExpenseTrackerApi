@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ExpenseTracker.Application.Specifications;
+namespace ExpenseTracker.Application.Specifications.ExpenseSpecs;
 
 public class ExpensesByCategoryAndMonthSpec : BaseSpecification<Expense>
 {

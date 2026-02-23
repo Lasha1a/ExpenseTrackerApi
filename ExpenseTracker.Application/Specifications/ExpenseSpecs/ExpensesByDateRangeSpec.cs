@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ExpenseTracker.Application.Specifications;
+namespace ExpenseTracker.Application.Specifications.ExpenseSpecs;
 
 internal class ExpensesByDateRangeSpec : BaseSpecification<Expense> //this specification is for expense entities
 {

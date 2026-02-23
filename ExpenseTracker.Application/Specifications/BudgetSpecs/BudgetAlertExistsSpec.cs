@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ExpenseTracker.Application.Specifications;
+namespace ExpenseTracker.Application.Specifications.BudgetSpecs;
 
 public class BudgetAlertExistsSpec : BaseSpecification<BudgetAlert>
 {
