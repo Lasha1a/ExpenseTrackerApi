@@ -12,11 +12,11 @@ public class BudgetAlert : EntityBase
     
     public Guid UserId { get; set; }
     public User User { get; set; } = null!;
-
     public Guid CategoryId { get; set; }
     public Category Category { get; set; } = null!;
 
     public int Month { get; set; }
+    public int Year { get; set; }
     public decimal PercentageUsed { get; set; }
     public DateTime AlertSentAt { get; set; }
 }
