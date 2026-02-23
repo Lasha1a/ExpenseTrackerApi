@@ -9,7 +9,7 @@ namespace ExpenseTracker.Application.Specifications;
 
 public class CategoriesByUserSpec : BaseSpecification<Category>
 {
-    public CategoriesByUserSpec(Guid userId) 
+    public CategoriesByUserSpec(Guid userId)
         : base(c => c.UserId == userId && c.IsActive)
-    {
+    { }
     }

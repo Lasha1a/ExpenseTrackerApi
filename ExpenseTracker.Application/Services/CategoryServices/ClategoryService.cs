@@ -29,7 +29,8 @@ public class CategoryService
             UserId = request.UserId,
             Name = request.Name,
             ColorHex = request.ColorHex,
-            MonthlyBudget = request.MonthlyBudget
+            MonthlyBudget = request.MonthlyBudget,
+            IsActive = true
         };
 
         await _repository.AddAsync(category);
