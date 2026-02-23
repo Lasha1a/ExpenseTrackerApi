@@ -1,5 +1,6 @@
 ﻿using ExpenseTracker.Application.DTOs.CategoriesDtos;
 using ExpenseTracker.Application.Interfaces.Repositories;
+using ExpenseTracker.Application.Services.ExpenseServices;
 using ExpenseTracker.Core.Entities;
 using System;
 using System.Collections.Generic;
@@ -11,10 +12,12 @@ namespace ExpenseTracker.Application.Services.CategoryServices;
 public class CategoryService
 {
     private readonly IRepository<Category> _repository;
+    private readonly  ExpenseService _expenseService;
 
-    public CategoryService(IRepository<Category> repository)
+    public CategoryService(IRepository<Category> repository, ExpenseService expenseService)
     {
         _repository = repository;
+        _expenseService = expenseService;
     }
 
     //Create
@@ -65,5 +68,13 @@ public class CategoryService
         category.IsActive = false;
 
         _repository.Update(category);
+    }
+
+    public async Task<IReadOnlyList<CategoryBudgetStatusDto>> GetMonthlyBudgetStatusAsync(Guid userId, int year, int month)
+    {
+        //get breakdown method from expense service that exists alrdy
+        var breakdown = await _expenseService.GetCategoryExpenseBreakdownAsync(userId, year, month);
+
+        var categories = await _repository.ListAsync(new Category);
     }
 }
