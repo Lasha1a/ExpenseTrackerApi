@@ -14,6 +14,6 @@ public class CategoryBudgetStatusDto
     public decimal MonthlyBudget { get; init; }
     public decimal SpentThisMonth { get; init; }
 
-    public decimal percentageUsed { get; init; }
+    public decimal? percentageUsed { get; init; }
     public bool IsExided { get; init; }
 }

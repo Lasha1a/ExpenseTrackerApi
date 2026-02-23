@@ -1,6 +1,7 @@
 ﻿using ExpenseTracker.Application.DTOs.CategoriesDtos;
 using ExpenseTracker.Application.Interfaces.Repositories;
 using ExpenseTracker.Application.Services.ExpenseServices;
+using ExpenseTracker.Application.Specifications;
 using ExpenseTracker.Core.Entities;
 using System;
 using System.Collections.Generic;
@@ -75,6 +76,36 @@ public class CategoryService
         //get breakdown method from expense service that exists alrdy
         var breakdown = await _expenseService.GetCategoryExpenseBreakdownAsync(userId, year, month);
 
-        var categories = await _repository.ListAsync(new Category);
+        //get category with budgets
+        var categories = await _repository.ListAsync(new CategoriesByUserSpec(userId));
+
+        var result = new List<CategoryBudgetStatusDto>();
+
+        foreach (var category in categories) // Iterate through each category to calculate the budget status
+        {
+            var spent = breakdown.FirstOrDefault(b => b.CategoryId == category.Id)
+                ?.TotalAmount ?? 0;
+
+            decimal? percentagedUsed = null;
+            bool isExided = false;
+
+            if(category.MonthlyBudget > 0) // Check if the category has a defined monthly budget greater than zero
+            {
+                percentagedUsed = (spent / category.MonthlyBudget) * 100; // Calculate the percentage of the budget used
+                isExided = spent >=  category.MonthlyBudget; // Determine if the spent amount exceeds the monthly budget
+            }
+
+            result.Add(new CategoryBudgetStatusDto
+            {
+                CategoryId = category.Id,
+                CategoryName = category.Name,
+                MonthlyBudget = category.MonthlyBudget,
+                SpentThisMonth = spent,
+                percentageUsed = percentagedUsed,
+                IsExided = isExided
+            }); // Add a new CategoryBudgetStatusDto to the result list with the calculated values
+        }
+
+        return result; // Return the list of CategoryBudgetStatusDto objects representing the budget status for each category
     }
 }
