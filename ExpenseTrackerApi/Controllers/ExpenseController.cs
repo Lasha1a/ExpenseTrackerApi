@@ -134,4 +134,13 @@ public class ExpenseController : ControllerBase
         });
     }
 
+
+    [HttpGet("breakdown/category")]
+    public async Task<IActionResult> GetExpenseBreakdownByCategory([FromQuery] Guid userId, [FromQuery] int year, [FromQuery] int month)
+    {
+        var result = await _expenseService.GetCategoryExpenseBreakdownAsync(userId, year, month);
+
+        return Ok(result);
+    }
+
 }

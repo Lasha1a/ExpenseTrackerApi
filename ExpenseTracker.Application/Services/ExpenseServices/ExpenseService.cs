@@ -126,4 +126,20 @@ public class ExpenseService
 
         return expenses.Count;
     }
+
+    public async Task<IReadOnlyList<CategoryExpenseBreakdownDto>> GetCategoryExpenseBreakdownAsync(Guid userId, int year, int month)
+    {
+        var spec = new ExpensesByMonthSpec(userId, year, month);
+        var expenses = await _repository.ListAsync(spec);
+
+        return expenses
+            .GroupBy(e => new { e.CategoryId, e.Category.Name })
+            .Select(g => new CategoryExpenseBreakdownDto
+            {
+                CategoryId = g.Key.CategoryId,
+                CategoryName = g.Key.Name,
+                TotalAmount = g.Sum(e => e.Amount)
+            })
+            .ToList();
+    }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ExpenseTracker.Application.DTOs.ExpenseDtos;
 
-internal class CategoryExpenseBreakdownDto
+public class CategoryExpenseBreakdownDto
 {
     public Guid CategoryId { get; init; }
     public string CategoryName { get; init; } = null!;
