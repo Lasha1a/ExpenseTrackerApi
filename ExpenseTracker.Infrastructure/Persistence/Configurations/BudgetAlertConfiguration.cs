@@ -21,6 +21,9 @@ public class BudgetAlertConfiguration : IEntityTypeConfiguration<BudgetAlert>
         builder.Property(x => x.Month)
             .IsRequired();
 
+        builder.Property(x => x.Year)
+            .IsRequired();
+
         builder.Property(x => x.PercentageUsed)
             .HasPrecision(5, 2)
             .IsRequired();
