@@ -9,6 +9,7 @@ using ExpenseTracker.Application.Interfaces.Repositories;
 using ExpenseTracker.Application.Interfaces.Security;
 using Microsoft.AspNetCore.Identity;
 using ExpenseTracker.Infrastructure.Repositories.Security;
+using ExpenseTracker.Infrastructure.Background;
 
 
 namespace ExpenseTracker.Infrastructure;
@@ -25,6 +26,8 @@ public static class DependencyInjection
 
         services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
         services.AddScoped<IPasswordHasher, AppPasswordHasher>();
+
+        services.AddHostedService<BudgetAlertWorker>(); // Register the background worker
 
         return services;
     }
