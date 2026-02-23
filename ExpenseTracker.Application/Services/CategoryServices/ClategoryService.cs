@@ -71,6 +71,7 @@ public class CategoryService
         _repository.Update(category);
     }
 
+    // get monthly budget status for each category for a user
     public async Task<IReadOnlyList<CategoryBudgetStatusDto>> GetMonthlyBudgetStatusAsync(Guid userId, int year, int month)
     {
         //get breakdown method from expense service that exists alrdy

@@ -66,4 +66,11 @@ public class CategoryController : ControllerBase
         await _context.SaveChangesAsync();
         return NoContent();
     }
+
+    [HttpGet("budget-status")]
+    public async Task<IActionResult> GetMonthlyBudgetStatus([FromQuery] Guid userId, [FromQuery] int year, [FromQuery] int month)
+    {
+        var result = await _categoryService.GetMonthlyBudgetStatusAsync(userId, month, year);
+        return Ok(result);
+    }
 }
