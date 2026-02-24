@@ -32,6 +32,7 @@ public class RedisCacheService : ICacheService
         return JsonSerializer.Deserialize<T>(cachedValue);
     }
 
+    //The SetAsync method is responsible for storing a value in the cache with a specified key and expiration time. It first serializes the value to a JSON string using the JsonSerializer.Serialize method. Then, it creates an instance of DistributedCacheEntryOptions to specify the expiration time for the cache entry. Finally, it uses the SetStringAsync method of the IDistributedCache interface to store the serialized value in the cache with the provided key and options.
     public async Task SetAsync<T>(string key, T value, TimeSpan expiration)
     {
         var serializedValue = JsonSerializer.Serialize(value);
@@ -44,7 +45,9 @@ public class RedisCacheService : ICacheService
 
         await _cache.SetStringAsync(key, serializedValue, options); // The SetStringAsync method of the IDistributedCache interface is used to store a string value in the cache with the specified key and options. In this case, we are storing the serialized JSON string representation of the value in the cache with the provided key and expiration options.
     }
-     public async Task RemoveAsync(string key)
+
+    // The RemoveAsync method is responsible for removing a cache entry with the specified key from the cache. It uses the RemoveAsync method of the IDistributedCache interface to delete the cache entry associated with the provided key.
+    public async Task RemoveAsync(string key)
     {
         await _cache.RemoveAsync(key);
     }

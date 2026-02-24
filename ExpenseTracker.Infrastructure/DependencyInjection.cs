@@ -10,6 +10,8 @@ using ExpenseTracker.Application.Interfaces.Security;
 using Microsoft.AspNetCore.Identity;
 using ExpenseTracker.Infrastructure.Repositories.Security;
 using ExpenseTracker.Infrastructure.Background;
+using ExpenseTracker.Application.Interfaces.Caching;
+using ExpenseTracker.Infrastructure.Caching;
 
 
 namespace ExpenseTracker.Infrastructure;
@@ -35,6 +37,8 @@ public static class DependencyInjection
         services.AddScoped<IPasswordHasher, AppPasswordHasher>();
 
         services.AddHostedService<BudgetAlertWorker>(); // Register the background worker
+
+        services.AddScoped<ICacheService, RedisCacheService>(); //register the cache service to be used in the application, allowing for caching of data using Redis as the underlying cache store.
 
         return services;
     }
