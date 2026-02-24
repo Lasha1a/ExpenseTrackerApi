@@ -29,8 +29,8 @@ public static class DependencyInjection
         // registered redis cache services with the configuration from appsettings.json. The instance name is set to "ExpenseTracker:" to namespace the cache keys and avoid conflicts with other applications that might be using the same Redis instance.
         services.AddStackExchangeRedisCache(options =>
         {
-            options.Configuration = configuration["Redis:Configuration"];
-            options.InstanceName = "ExpenseTracker:";
+            options.Configuration = configuration["Redis:ConnectionString"];
+            options.InstanceName = configuration["Redis:InstanceName"];
         });
 
         services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
