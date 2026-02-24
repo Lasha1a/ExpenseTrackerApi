@@ -8,16 +8,16 @@ namespace ExpenseTracker.Application.DTOs.ExpenseDtos;
 
 public class ExpenseResponse //for get/list responses
 {
-    public Guid Id { get; init; }
+    public Guid Id { get; set; }
 
-    public Guid UserId { get; init; }
-    public Guid CategoryId { get; init; }
-    public string CategoryName { get; init; } = null!;
+    public Guid UserId { get; set; }
+    public Guid CategoryId { get; set; }
+    public string CategoryName { get; set; } = null!;
 
-    public decimal Amount { get; init; }
-    public string Description { get; init; } = null!;
-    public DateTime ExpenseDate { get; init; }
+    public decimal Amount { get; set; }
+    public string Description { get; set; } = null!;
+    public DateTime ExpenseDate { get; set; }
 
-    public DateTime CreatedAt { get; init; }
-    public DateTime? UpdatedAt { get; init; }
+    public DateTime CreatedAt { get; set; }
+    public DateTime? UpdatedAt { get; set; }
 }

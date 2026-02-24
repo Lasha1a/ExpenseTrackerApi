@@ -2,6 +2,7 @@
 using ExpenseTracker.Application.Interfaces.Repositories;
 using ExpenseTracker.Application.Interfaces.Security;
 using ExpenseTracker.Application.Specifications;
+using ExpenseTracker.Application.Specifications.UserSpecs;
 using ExpenseTracker.Core.Entities;
 using System;
 using System.Collections.Generic;

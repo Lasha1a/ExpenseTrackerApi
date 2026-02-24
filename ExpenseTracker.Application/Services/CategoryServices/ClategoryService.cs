@@ -2,6 +2,7 @@
 using ExpenseTracker.Application.Interfaces.Repositories;
 using ExpenseTracker.Application.Services.ExpenseServices;
 using ExpenseTracker.Application.Specifications;
+using ExpenseTracker.Application.Specifications.CategorySpecs;
 using ExpenseTracker.Core.Entities;
 using System;
 using System.Collections.Generic;

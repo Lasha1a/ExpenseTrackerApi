@@ -8,16 +8,20 @@ using ExpenseTracker.Core.Entities;
 using ExpenseTracker.Application.DTOs.ExpenseDtos;
 using ExpenseTracker.Application.Specifications;
 using ExpenseTracker.Application.DTOs.CSV;
+using ExpenseTracker.Application.Specifications.ExpenseSpecs;
+using ExpenseTracker.Application.Interfaces.Caching;
 
 namespace ExpenseTracker.Application.Services.ExpenseServices;
 
 public class ExpenseService
 {
     private readonly IRepository<Expense> _repository;
+    private readonly ICacheService _cache;
 
-    public ExpenseService(IRepository<Expense> repository)
+    public ExpenseService(IRepository<Expense> repository, ICacheService cache)
     {
         _repository = repository;
+        _cache = cache;
     }
 
 
@@ -45,9 +49,41 @@ public class ExpenseService
     }
 
     //read by id
-    public async Task<Expense?> GetByIdAsync(Guid id)
+    public async Task<ExpenseResponse?> GetByIdAsync(Guid id)
     {
-        return await _repository.GetByIdAsync(id);
+        var cacheKey = $"expense:id:{id}"; // Generate a unique cache key for the expense based on its ID
+
+        // Try to get the expense from the cache first. If it's found, return it immediately
+        var cachedExpense = await _cache.GetAsync<ExpenseResponse>(cacheKey);
+        if(cachedExpense != null)
+        {
+            return cachedExpense;
+        }
+
+        // If the expense is not found in the cache, retrieve it from the database
+        var expense = await _repository.GetByIdAsync(id);
+        if (expense == null)
+        {
+            throw new KeyNotFoundException("Expense not found.");
+        }
+
+        //map entity to response dto
+        var expenseResponse = new ExpenseResponse
+        {
+            Id = expense.Id,
+            UserId = expense.UserId,
+            CategoryId = expense.CategoryId,
+            Amount = expense.Amount,
+            Description = expense.Description,
+            ExpenseDate = expense.ExpenseDate,
+            CreatedAt = expense.CreatedAt,
+            UpdatedAt = expense.UpdatedAt
+        };
+
+        //Store the retrieved expense in the cache with an expiration time of 5 minutes. This allows subsequent requests for the same expense to be served from the cache, improving response times and reducing database load.
+        await _cache.SetAsync(cacheKey, expenseResponse, TimeSpan.FromMinutes(5));
+
+        return expenseResponse;
     }
 
     //update
@@ -72,6 +108,9 @@ public class ExpenseService
         expense.UpdatedAt = DateTime.UtcNow;
 
         _repository.Update(expense);
+
+        // Invalidate the cache for this expense since it has been updated
+        await _cache.RemoveAsync($"expense:id:{expense.Id}");
     }
 
     //delete
@@ -83,6 +122,9 @@ public class ExpenseService
             throw new KeyNotFoundException("Expense not found.");
         }
         _repository.Delete(expense);
+
+        // Invalidate the cache for this expense since it has been deleted
+        await _cache.RemoveAsync($"expense:id:{expense.Id}"); 
     }
 
     //list with filtering, pagination, and sorting
