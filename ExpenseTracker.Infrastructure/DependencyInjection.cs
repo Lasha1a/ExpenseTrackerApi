@@ -24,6 +24,13 @@ public static class DependencyInjection
             options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"));
         });
 
+        // registered redis cache services with the configuration from appsettings.json. The instance name is set to "ExpenseTracker:" to namespace the cache keys and avoid conflicts with other applications that might be using the same Redis instance.
+        services.AddStackExchangeRedisCache(options =>
+        {
+            options.Configuration = configuration["Redis:Configuration"];
+            options.InstanceName = "ExpenseTracker:";
+        });
+
         services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
         services.AddScoped<IPasswordHasher, AppPasswordHasher>();
 
