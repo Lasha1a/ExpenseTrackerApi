@@ -25,10 +25,6 @@ internal class ReportJobConfiguration : IEntityTypeConfiguration<ReportJob>
             .IsRequired()
             .HasMaxLength(20);
 
-        builder.Property(x => x.FileUrl)
-            .IsRequired(false)
-            .HasMaxLength(500);
-
         builder.Property(x => x.CreatedAt)
             .HasDefaultValueSql("NOW()");
 
