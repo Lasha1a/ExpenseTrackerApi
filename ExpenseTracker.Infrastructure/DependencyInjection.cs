@@ -12,6 +12,8 @@ using ExpenseTracker.Infrastructure.Repositories.Security;
 using ExpenseTracker.Infrastructure.Background;
 using ExpenseTracker.Application.Interfaces.Caching;
 using ExpenseTracker.Infrastructure.Caching;
+using ExpenseTracker.Application.Interfaces.Reports;
+using ExpenseTracker.Infrastructure.Repositories.Reports;
 
 
 namespace ExpenseTracker.Infrastructure;
@@ -39,6 +41,8 @@ public static class DependencyInjection
         services.AddHostedService<BudgetAlertWorker>(); // Register the background worker
 
         services.AddScoped<ICacheService, RedisCacheService>(); //register the cache service to be used in the application, allowing for caching of data using Redis as the underlying cache store.
+
+        services.AddScoped<IReportService, ReportService>(); // Register the report service to handle report generation and management.
 
         return services;
     }
