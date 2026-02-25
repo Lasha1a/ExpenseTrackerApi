@@ -14,7 +14,7 @@ public class ReportJob : EntityBase
     public User User { get; set; } = null!;
     
     public string ReportType { get; set; } = null!;
-    public string FileUrl { get; set; } = null!;
+    public string FileUrl { get; set; }
     public string Status { get; set; } = "Pending";
 
     public DateTime CreatedAt { get; set; }

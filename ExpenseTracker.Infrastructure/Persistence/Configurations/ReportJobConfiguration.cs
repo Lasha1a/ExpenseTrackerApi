@@ -26,6 +26,7 @@ internal class ReportJobConfiguration : IEntityTypeConfiguration<ReportJob>
             .HasMaxLength(20);
 
         builder.Property(x => x.FileUrl)
+            .IsRequired(false)
             .HasMaxLength(500);
 
         builder.Property(x => x.CreatedAt)
