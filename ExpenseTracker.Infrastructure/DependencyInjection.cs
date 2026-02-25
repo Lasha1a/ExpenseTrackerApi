@@ -39,7 +39,7 @@ public static class DependencyInjection
         services.AddScoped<IPasswordHasher, AppPasswordHasher>();
 
         services.AddHostedService<BudgetAlertWorker>(); // Register the background worker
-        services.AddHostedService<ReportJobWorker>(); // Register the background worker for report generation
+        services.AddHostedService<ReportJobWorker>(); // Register the background worker for processing report jobs
 
         services.AddScoped<ICacheService, RedisCacheService>(); //register the cache service to be used in the application, allowing for caching of data using Redis as the underlying cache store.
 
