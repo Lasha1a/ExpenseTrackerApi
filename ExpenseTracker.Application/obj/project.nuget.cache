@@ -1,9 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "V/puMG5/Ta4=",
+  "dgSpecHash": "xG1DnGvUEnk=",
   "success": true,
   "projectFilePath": "C:\\Users\\lasha\\source\\repos\\ExpenseTrackerApi\\ExpenseTracker.Application\\ExpenseTracker.Application.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\lasha\\.nuget\\packages\\fluentvalidation\\11.11.0\\fluentvalidation.11.11.0.nupkg.sha512",
+    "C:\\Users\\lasha\\.nuget\\packages\\fluentvalidation.aspnetcore\\11.3.1\\fluentvalidation.aspnetcore.11.3.1.nupkg.sha512",
+    "C:\\Users\\lasha\\.nuget\\packages\\fluentvalidation.dependencyinjectionextensions\\11.11.0\\fluentvalidation.dependencyinjectionextensions.11.11.0.nupkg.sha512",
     "C:\\Users\\lasha\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\9.0.13\\microsoft.extensions.configuration.abstractions.9.0.13.nupkg.sha512",
     "C:\\Users\\lasha\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\10.0.3\\microsoft.extensions.dependencyinjection.abstractions.10.0.3.nupkg.sha512",
     "C:\\Users\\lasha\\.nuget\\packages\\microsoft.extensions.primitives\\9.0.13\\microsoft.extensions.primitives.9.0.13.nupkg.sha512"
