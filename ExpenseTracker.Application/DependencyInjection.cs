@@ -1,4 +1,5 @@
 ﻿using ExpenseTracker.Application.Validators.CategoryValidators;
+using ExpenseTracker.Application.Validators.ExpenseValidators;
 using ExpenseTracker.Application.Validators.ReportValidations;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,10 +15,12 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddApplicationDI(this IServiceCollection services)
     {
-
+        
+        //register validators
         services.AddValidatorsFromAssemblyContaining<UpdateCategoryRequestValidator>();
         services.AddValidatorsFromAssemblyContaining<CreateCategoryRequestValidator>();
         services.AddValidatorsFromAssemblyContaining<BudgetStatusRequestValidator>();
+        services.AddValidatorsFromAssemblyContaining<CreateExpenseRequestValidator>();
 
         return services;
     }

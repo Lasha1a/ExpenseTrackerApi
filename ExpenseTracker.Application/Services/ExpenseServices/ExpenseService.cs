@@ -26,12 +26,8 @@ public class ExpenseService
 
 
     //Create
-    public async Task<Expense> CreateAsync(CreateExpenseRequest request)
+    public async Task<ExpenseResponse> CreateAsync(CreateExpenseRequest request)
     {
-        if(request.Amount <= 0)
-        {
-            throw new ArgumentException("Amount must be greater than zero.");
-        }
 
         var expense = new Expense
         {
@@ -39,13 +35,26 @@ public class ExpenseService
             CategoryId = request.CategoryId,
             Amount = request.Amount,
             Description = request.Description,
-            ExpenseDate = request.ExpenseDate,
+            ExpenseDate = DateTime.SpecifyKind(request.ExpenseDate.ToDateTime(TimeOnly.MinValue), DateTimeKind.Utc),
             CreatedAt = DateTime.UtcNow
         };
 
         await _repository.AddAsync(expense);
 
-        return expense;
+        return new ExpenseResponse
+        {
+            Id = expense.Id,
+            UserId = expense.UserId,
+            CategoryId = expense.CategoryId,
+            CategoryName = string.Empty, // Category name is not available at this point since we only have the CategoryId. It will be populated when retrieving the expense with GetByIdAsync, which includes the category details.
+            Amount = expense.Amount,
+            Description = expense.Description ?? string.Empty,
+            ExpenseDate = request.ExpenseDate,
+            CreatedAt = expense.CreatedAt,
+            UpdatedAt = expense.UpdatedAt
+        };
+
+        
     }
 
     //read by id
@@ -76,7 +85,6 @@ public class ExpenseService
             CategoryName = expense.Category.Name,
             Amount = expense.Amount,
             Description = expense.Description,
-            ExpenseDate = expense.ExpenseDate,
             CreatedAt = expense.CreatedAt,
             UpdatedAt = expense.UpdatedAt
         };

@@ -13,6 +13,6 @@ public class CreateExpenseRequest
 
     public decimal Amount { get; init; }
     public string? Description { get; init; }
-    public DateTime ExpenseDate { get; init; }
+    public DateOnly ExpenseDate { get; init; }
 
 }

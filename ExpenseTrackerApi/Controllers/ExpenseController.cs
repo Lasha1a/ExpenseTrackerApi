@@ -76,7 +76,6 @@ public class ExpenseController : ControllerBase
             Id = e.Id,
             Amount = e.Amount,
             Description = e.Description,
-            ExpenseDate = e.ExpenseDate,
             CategoryId = e.CategoryId,
             CategoryName = e.Category.Name
         });
