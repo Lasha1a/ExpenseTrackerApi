@@ -70,7 +70,7 @@ public class ExpenseService
         }
 
         // If the expense is not found in the cache, retrieve it from the database
-        var expense = await _repository.GetByIdAsync(id);
+        var expense = await _repository.FirstOrDefaultAsync(new ExpenseByIdWithCategorySpec(id));
         if (expense == null)
         {
             throw new KeyNotFoundException("Expense not found.");
@@ -85,6 +85,7 @@ public class ExpenseService
             CategoryName = expense.Category.Name,
             Amount = expense.Amount,
             Description = expense.Description,
+            ExpenseDate = DateOnly.FromDateTime(expense.ExpenseDate),
             CreatedAt = expense.CreatedAt,
             UpdatedAt = expense.UpdatedAt
         };

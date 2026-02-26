@@ -46,6 +46,12 @@ internal class GenericRepository<T> : IRepository<T> where T : EntityBase
        _context.Set<T>().Update(entity);
 
 
+    // This method retrieves the first entity that matches the given specification or returns null if no such entity exists. It applies the specification to filter, include related entities, and order the results before returning the first matching entity.
+    public async Task<T?> FirstOrDefaultAsync(ISpecification<T> specification) =>
+    await ApplySpecification(specification)
+        .FirstOrDefaultAsync();
+
+
     //private method to apply specifications to the queryable set of entities. This method is used by the ListAsync and CountAsync methods to filter, include related entities, and order the results based on the provided specification.
     private IQueryable<T> ApplySpecification(ISpecification<T> specification)
     {
