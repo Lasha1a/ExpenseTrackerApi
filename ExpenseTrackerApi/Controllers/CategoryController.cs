@@ -71,7 +71,7 @@ public class CategoryController : ControllerBase
     [HttpGet("budget-status")]
     public async Task<IActionResult> GetMonthlyBudgetStatus([FromQuery] CreateMonthlyReportRequest request)
     {
-        var result = await _categoryService.GetMonthlyBudgetStatusAsync(request.UserId, request.Month, request.Year);
+        var result = await _categoryService.GetMonthlyBudgetStatusAsync(request.UserId, request.Year, request.Month);
 
         if (result == null || !result.Any())
             return NotFound("No budget data found for the specified period.");

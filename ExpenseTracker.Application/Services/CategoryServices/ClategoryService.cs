@@ -1,4 +1,5 @@
 ﻿using ExpenseTracker.Application.DTOs.CategoriesDtos;
+using ExpenseTracker.Application.Interfaces.Caching;
 using ExpenseTracker.Application.Interfaces.Repositories;
 using ExpenseTracker.Application.Services.ExpenseServices;
 using ExpenseTracker.Application.Specifications;
@@ -15,11 +16,13 @@ public class CategoryService
 {
     private readonly IRepository<Category> _repository;
     private readonly  ExpenseService _expenseService;
+    private readonly ICacheService _cache;
 
-    public CategoryService(IRepository<Category> repository, ExpenseService expenseService)
+    public CategoryService(IRepository<Category> repository, ExpenseService expenseService, ICacheService cache)
     {
         _repository = repository;
         _expenseService = expenseService;
+        _cache = cache;
     }
 
     //Create
@@ -80,6 +83,7 @@ public class CategoryService
     {
         var breakdown = await _expenseService.GetCategoryExpenseBreakdownAsync(userId, year, month);
 
+        //if theres no expense w correct month or year for that user it will return nullable status
         if(!breakdown.Any())
         {
             return null;
