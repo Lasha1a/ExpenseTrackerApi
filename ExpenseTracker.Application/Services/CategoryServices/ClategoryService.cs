@@ -76,28 +76,31 @@ public class CategoryService
     }
 
     // get monthly budget status for each category for a user
-    public async Task<IReadOnlyList<CategoryBudgetStatusDto>> GetMonthlyBudgetStatusAsync(Guid userId, int year, int month)
+    public async Task<IReadOnlyList<CategoryBudgetStatusDto>?> GetMonthlyBudgetStatusAsync(Guid userId, int year, int month)
     {
-        //get breakdown method from expense service that exists alrdy
         var breakdown = await _expenseService.GetCategoryExpenseBreakdownAsync(userId, year, month);
 
-        //get category with budgets
-        var categories = await _repository.ListAsync(new CategoriesByUserSpec(userId));
+        if(!breakdown.Any())
+        {
+            return null;
+        }
 
+        var categories = await _repository.ListAsync(new CategoriesByUserSpec(userId));
         var result = new List<CategoryBudgetStatusDto>();
 
-        foreach (var category in categories) // Iterate through each category to calculate the budget status
+        foreach(var category in categories)
         {
             var spent = breakdown.FirstOrDefault(b => b.CategoryId == category.Id)
                 ?.TotalAmount ?? 0;
 
             decimal? percentagedUsed = null;
-            bool isExided = false;
+            bool isExceeded = false;
 
-            if(category.MonthlyBudget > 0) // Check if the category has a defined monthly budget greater than zero
+            //Only calculate percentage if there's a budget set (> 0) to avoid division by zero and meaningless percentages
+            if (category.MonthlyBudget > 0)
             {
-                percentagedUsed = (spent / category.MonthlyBudget) * 100; // Calculate the percentage of the budget used
-                isExided = spent >=  category.MonthlyBudget; // Determine if the spent amount exceeds the monthly budget
+                percentagedUsed = (spent / category.MonthlyBudget) * 100;
+                isExceeded = spent >= category.MonthlyBudget;
             }
 
             result.Add(new CategoryBudgetStatusDto
@@ -107,10 +110,10 @@ public class CategoryService
                 MonthlyBudget = category.MonthlyBudget,
                 SpentThisMonth = spent,
                 percentageUsed = percentagedUsed,
-                IsExided = isExided
-            }); // Add a new CategoryBudgetStatusDto to the result list with the calculated values
+                IsExeeded = isExceeded
+            });
         }
 
-        return result; // Return the list of CategoryBudgetStatusDto objects representing the budget status for each category
+        return result;
     }
 }

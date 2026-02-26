@@ -1,4 +1,5 @@
 ﻿using ExpenseTracker.Application.DTOs.CategoriesDtos;
+using ExpenseTracker.Application.DTOs.Reports;
 using ExpenseTracker.Application.Services.CategoryServices;
 using ExpenseTracker.Infrastructure.DataBase;
 using Microsoft.AspNetCore.Http;
@@ -68,9 +69,13 @@ public class CategoryController : ControllerBase
     }
 
     [HttpGet("budget-status")]
-    public async Task<IActionResult> GetMonthlyBudgetStatus([FromQuery] Guid userId, [FromQuery] int year, [FromQuery] int month)
+    public async Task<IActionResult> GetMonthlyBudgetStatus([FromQuery] CreateMonthlyReportRequest request)
     {
-        var result = await _categoryService.GetMonthlyBudgetStatusAsync(userId, month, year);
+        var result = await _categoryService.GetMonthlyBudgetStatusAsync(request.UserId, request.Month, request.Year);
+
+        if (result == null || !result.Any())
+            return NotFound("No budget data found for the specified period.");
+
         return Ok(result);
     }
 }
