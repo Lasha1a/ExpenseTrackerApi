@@ -73,6 +73,7 @@ public class ExpenseService
             Id = expense.Id,
             UserId = expense.UserId,
             CategoryId = expense.CategoryId,
+            CategoryName = expense.Category.Name,
             Amount = expense.Amount,
             Description = expense.Description,
             ExpenseDate = expense.ExpenseDate,

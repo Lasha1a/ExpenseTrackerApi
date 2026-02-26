@@ -35,7 +35,7 @@ public class CategoryController : ControllerBase
         var category = await _categoryService.GetByIdAsync(id);
         if (category == null)
         {
-            return NotFound();
+            return NotFound("category not found or has been deleted");
         }
         var response = new CategoryResponse
         {

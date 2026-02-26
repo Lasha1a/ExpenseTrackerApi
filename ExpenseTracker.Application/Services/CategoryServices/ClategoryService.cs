@@ -41,7 +41,9 @@ public class CategoryService
     //read by id
     public async Task<Category?> GetByIdAsync(Guid id)
     {
-        return await _repository.GetByIdAsync(id);
+        var category = await _repository.GetByIdAsync(id);
+
+        return category is { IsActive: true } ? category : null;
     }
 
     //update
