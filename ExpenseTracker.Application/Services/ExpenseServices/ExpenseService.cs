@@ -106,14 +106,10 @@ public class ExpenseService
             throw new KeyNotFoundException("Expense not found.");
         }
 
-        if(request.Amount <= 0)
-        {
-              throw new ArgumentException("Amount must be greater than zero.");
-        }
 
         expense.Amount = request.Amount;
         expense.Description = request.Description;
-        expense.ExpenseDate = request.ExpenseDate;
+        expense.ExpenseDate = DateTime.SpecifyKind(request.ExpenseDate.ToDateTime(TimeOnly.MinValue), DateTimeKind.Utc);
         expense.CategoryId = request.CategoryId;
         expense.UpdatedAt = DateTime.UtcNow;
 

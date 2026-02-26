@@ -10,7 +10,7 @@ public class UpdateExpenseRequest
 {
     public decimal Amount { get; init; }
     public string? Description { get; init; }
-    public DateTime ExpenseDate { get; init; }
+    public DateOnly ExpenseDate { get; init; }
 
     public Guid CategoryId { get; init; }
 
