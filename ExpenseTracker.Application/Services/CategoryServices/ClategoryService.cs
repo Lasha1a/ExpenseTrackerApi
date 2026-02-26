@@ -42,11 +42,33 @@ public class CategoryService
     }
 
     //read by id
-    public async Task<Category?> GetByIdAsync(Guid id)
+    public async Task<CategoryResponse?> GetByIdAsync(Guid id)
     {
-        var category = await _repository.GetByIdAsync(id);
+        var cacheKey = $"Category:id: {id}";
 
-        return category is { IsActive: true } ? category : null;
+        var cachedCategory = await _cache.GetAsync<CategoryResponse>(cacheKey);
+        if(cachedCategory != null)
+        {
+            return cachedCategory;
+        }
+
+        var category = await _repository.GetByIdAsync(id);
+        if(category == null || !category.IsActive)
+        {
+            return null;
+        }
+
+        var response = new CategoryResponse
+        {
+            Id = category.Id,
+            Name = category.Name,
+            ColorHex = category.ColorHex,
+            MonthlyBudget = category.MonthlyBudget,
+            IsActive = category.IsActive
+        };
+
+        await _cache.SetAsync(cacheKey, response, TimeSpan.FromMinutes(5));
+        return response;
     }
 
     //update
@@ -63,6 +85,8 @@ public class CategoryService
         category.MonthlyBudget = request.MonthlyBudget;
 
         _repository.Update(category);
+
+        await _cache.RemoveAsync($"Category:id: {id}");
     }
 
     //soft delete
@@ -76,6 +100,8 @@ public class CategoryService
         category.IsActive = false;
 
         _repository.Update(category);
+
+        await _cache.RemoveAsync($"Category:id: {id}");
     }
 
     // get monthly budget status for each category for a user

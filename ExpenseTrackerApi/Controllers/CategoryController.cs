@@ -38,16 +38,8 @@ public class CategoryController : ControllerBase
         {
             return NotFound("category not found or has been deleted");
         }
-        var response = new CategoryResponse
-        {
-            Id = category.Id,
-            Name = category.Name,
-            ColorHex = category.ColorHex,
-            MonthlyBudget = category.MonthlyBudget,
-            IsActive = category.IsActive
-        };
 
-        return Ok(response);
+        return Ok(category);
     }
 
     //update
