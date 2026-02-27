@@ -34,10 +34,11 @@ public class ReportJobWorker : BackgroundService
                 {
                     await ProcessJob(job, context, emailService, stoppingToken);
                 }
-                catch
+                catch (Exception ex)
                 {
                     job.Status = "Failed";
                     job.UpdatedAt = DateTime.UtcNow;
+                    Console.WriteLine($"Job {job.Id} failed: {ex.Message}");
                 }
             }
             await context.SaveChangesAsync(stoppingToken);

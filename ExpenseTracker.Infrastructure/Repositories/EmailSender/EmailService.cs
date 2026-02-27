@@ -1,6 +1,8 @@
 ﻿using ExpenseTracker.Application.DTOs.EmailSender;
 using ExpenseTracker.Application.Interfaces.Email;
 using MailKit.Security;
+using Microsoft.Extensions.Options;
+using Microsoft.SqlServer.Management.Smo;
 using MimeKit;
 using System;
 using System.Collections.Generic;
@@ -15,9 +17,9 @@ public class EmailService : IEmailService
 {
     private readonly EmailSettings _emailSettings;
 
-    public EmailService(EmailSettings emailSettings)
+    public EmailService(IOptions<EmailSettings> emailSettings)
     {
-        _emailSettings = emailSettings;
+        _emailSettings = emailSettings.Value;
     }
 
     // Send email asynchronously with MailKit
