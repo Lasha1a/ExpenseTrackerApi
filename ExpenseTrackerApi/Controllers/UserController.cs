@@ -21,7 +21,7 @@ public class UserController : ControllerBase
 
     //create
     [HttpPost]
-    public async Task<IActionResult> Create(CreateUserRequest request)
+    public async Task<IActionResult> Create([FromBody]CreateUserRequest request)
     {
         var user = await _userService.CreateAsync(request);
         await _context.SaveChangesAsync();
@@ -53,7 +53,7 @@ public class UserController : ControllerBase
     }
     //login
     [HttpPost("login")]
-    public async Task<IActionResult> Login(LoginRequest request)
+    public async Task<IActionResult> Login([FromBody]LoginRequest request)
     {
         var user = await _userService.LoginAsync(request);
         if (user == null)

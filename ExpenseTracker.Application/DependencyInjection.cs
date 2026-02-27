@@ -1,6 +1,7 @@
 ﻿using ExpenseTracker.Application.Validators.CategoryValidators;
 using ExpenseTracker.Application.Validators.ExpenseValidators;
 using ExpenseTracker.Application.Validators.ReportValidations;
+using ExpenseTracker.Application.Validators.UserValidators;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -23,6 +24,8 @@ public static class DependencyInjection
         services.AddValidatorsFromAssemblyContaining<CreateExpenseRequestValidator>();
         services.AddValidatorsFromAssemblyContaining<UpdateExpenseRequestValidator>();
         services.AddValidatorsFromAssemblyContaining<ExpenseListQueryValidator>();
+        services.AddValidatorsFromAssemblyContaining<CreateUserRequestValidator>();
+        services.AddValidatorsFromAssemblyContaining<LoginRequestValidator>();
 
         return services;
     }
