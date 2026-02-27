@@ -1,15 +1,16 @@
-﻿using ExpenseTracker.Application.Interfaces.Repositories;
+﻿using ExpenseTracker.Application.DTOs.CSV;
+using ExpenseTracker.Application.DTOs.ExpenseDtos;
+using ExpenseTracker.Application.Interfaces.Caching;
+using ExpenseTracker.Application.Interfaces.Repositories;
+using ExpenseTracker.Application.Specifications;
+using ExpenseTracker.Application.Specifications.ExpenseSpecs;
+using ExpenseTracker.Core.Entities;
+using Microsoft.AspNetCore.Http.HttpResults;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ExpenseTracker.Core.Entities;
-using ExpenseTracker.Application.DTOs.ExpenseDtos;
-using ExpenseTracker.Application.Specifications;
-using ExpenseTracker.Application.DTOs.CSV;
-using ExpenseTracker.Application.Specifications.ExpenseSpecs;
-using ExpenseTracker.Application.Interfaces.Caching;
 
 namespace ExpenseTracker.Application.Services.ExpenseServices;
 
@@ -134,10 +135,23 @@ public class ExpenseService
     }
 
     //list with filtering, pagination, and sorting
-    public async Task<IReadOnlyList<Expense>> ListAsync(ExpenseListQuery query)
+    public async Task<IReadOnlyList<ExpenseResponse>> ListAsync(ExpenseListQuery query)
     {
         var spec = new ExpensesListSpec(query);
-        return await _repository.ListAsync(spec);
+        var expenses = await _repository.ListAsync(spec);
+
+        return expenses.Select(expense => new ExpenseResponse
+        {
+            Id = expense.Id,
+            UserId = expense.UserId,
+            CategoryId = expense.CategoryId,
+            CategoryName = expense.Category.Name,
+            Amount = expense.Amount,
+            Description = expense.Description ?? string.Empty,
+            ExpenseDate = DateOnly.FromDateTime(expense.ExpenseDate),
+            CreatedAt = expense.CreatedAt,
+            UpdatedAt = expense.UpdatedAt
+        }).ToList();
     }
 
     //import from csv

@@ -71,16 +71,11 @@ public class ExpenseController : ControllerBase
     {
         var expenses = await _expenseService.ListAsync(query);
 
-        var response = expenses.Select(e => new ExpenseResponse
+       if(!expenses.Any())
         {
-            Id = e.Id,
-            Amount = e.Amount,
-            Description = e.Description,
-            CategoryId = e.CategoryId,
-            CategoryName = e.Category.Name
-        });
-
-        return Ok(response);
+            return NotFound("no expenses found");
+        }
+        return Ok(expenses);
     }
 
 

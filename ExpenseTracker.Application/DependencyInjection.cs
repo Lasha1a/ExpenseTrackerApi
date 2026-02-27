@@ -22,6 +22,7 @@ public static class DependencyInjection
         services.AddValidatorsFromAssemblyContaining<BudgetStatusRequestValidator>();
         services.AddValidatorsFromAssemblyContaining<CreateExpenseRequestValidator>();
         services.AddValidatorsFromAssemblyContaining<UpdateExpenseRequestValidator>();
+        services.AddValidatorsFromAssemblyContaining<ExpenseListQueryValidator>();
 
         return services;
     }
