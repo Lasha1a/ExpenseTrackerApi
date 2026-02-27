@@ -1,4 +1,5 @@
-﻿using ExpenseTracker.Core.Entities;
+﻿using ExpenseTracker.Application.Interfaces.Email;
+using ExpenseTracker.Core.Entities;
 using ExpenseTracker.Infrastructure.DataBase;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,13 +18,12 @@ public class ReportJobWorker : BackgroundService
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        // loop runs as long as the app is alive
         while (!stoppingToken.IsCancellationRequested)
         {
             using var scope = _scopeFactory.CreateScope();
             var context = scope.ServiceProvider.GetRequiredService<DataContext>();
+            var emailService = scope.ServiceProvider.GetRequiredService<IEmailService>();
 
-            // get pending jobs
             var pendingJobs = await context.ReportJobs
                 .Where(j => j.Status == "Pending")
                 .ToListAsync(stoppingToken);
@@ -32,7 +32,7 @@ public class ReportJobWorker : BackgroundService
             {
                 try
                 {
-                    await ProcessJob(job, context, stoppingToken);
+                    await ProcessJob(job, context, emailService, stoppingToken);
                 }
                 catch
                 {
@@ -40,10 +40,7 @@ public class ReportJobWorker : BackgroundService
                     job.UpdatedAt = DateTime.UtcNow;
                 }
             }
-
             await context.SaveChangesAsync(stoppingToken);
-
-            // wait 1 minute before next run
             await Task.Delay(TimeSpan.FromMinutes(1), stoppingToken);
         }
     }
@@ -51,23 +48,24 @@ public class ReportJobWorker : BackgroundService
     private async Task ProcessJob(
         ReportJob job,
         DataContext context,
+        IEmailService emailService,
         CancellationToken stoppingToken)
     {
-        // mark as processing
         job.Status = "Processing";
         job.UpdatedAt = DateTime.UtcNow;
         await context.SaveChangesAsync(stoppingToken);
 
-        // create Reports folder (in API root)
-        var reportsDir = Path.Combine(Directory.GetCurrentDirectory(), "Reports");
-        Directory.CreateDirectory(reportsDir);
+        // get user email from DB
+        var user = await context.Users.FindAsync(new object[] { job.UserId }, stoppingToken);
+        if (user == null)
+        {
+            job.Status = "Failed";
+            job.UpdatedAt = DateTime.UtcNow;
+            return;
+        }
 
-        // create file
-        var fileName = $"report_{job.Id}.txt";
-        var filePath = Path.Combine(reportsDir, fileName);
-
-        var content =
-$"""
+        var emailBody =
+    $"""
 Report ID: {job.Id}
 User ID: {job.UserId}
 Type: {job.ReportType}
@@ -75,9 +73,12 @@ Created: {job.CreatedAt}
 Generated: {DateTime.UtcNow}
 """;
 
-        await File.WriteAllTextAsync(filePath, content, stoppingToken);
+        await emailService.SendEmailAsync(
+            user.Email,
+            "Your Monthly Expense Report",
+            emailBody
+        );
 
-        // mark as completed
         job.Status = "Completed";
         job.UpdatedAt = DateTime.UtcNow;
     }

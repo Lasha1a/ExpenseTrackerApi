@@ -14,6 +14,9 @@ using ExpenseTracker.Application.Interfaces.Caching;
 using ExpenseTracker.Infrastructure.Caching;
 using ExpenseTracker.Application.Interfaces.Reports;
 using ExpenseTracker.Infrastructure.Repositories.Reports;
+using ExpenseTracker.Application.DTOs.EmailSender;
+using ExpenseTracker.Application.Interfaces.Email;
+using ExpenseTracker.Infrastructure.Repositories.EmailSender;
 
 
 namespace ExpenseTracker.Infrastructure;
@@ -44,6 +47,11 @@ public static class DependencyInjection
         services.AddScoped<ICacheService, RedisCacheService>(); //register the cache service to be used in the application, allowing for caching of data using Redis as the underlying cache store.
 
         services.AddScoped<IReportService, ReportService>(); // Register the report service to handle report generation and management.
+
+
+        // registered the email settings and email service to handle email sending functionality in the application. The email settings are configured using the "EmailSettings" section from the appsettings.json file, allowing for easy configuration of email-related parameters such as SMTP server, port, credentials, etc. The IEmailService interface is implemented by the EmailService class, which will contain the logic for sending emails based on the configured settings.
+        services.Configure<EmailSettings>(configuration.GetSection("EmailSettings"));
+        services.AddScoped<IEmailService, EmailService>();
 
         return services;
     }
