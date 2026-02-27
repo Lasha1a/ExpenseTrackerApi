@@ -1,5 +1,7 @@
-﻿using ExpenseTracker.Application.DTOs.CSV;
+﻿using ExpenseTracker.Application.DTOs.CategoriesDtos;
+using ExpenseTracker.Application.DTOs.CSV;
 using ExpenseTracker.Application.DTOs.ExpenseDtos;
+using ExpenseTracker.Application.DTOs.Reports;
 using ExpenseTracker.Application.Services.ExpenseServices;
 using ExpenseTracker.Infrastructure.DataBase;
 using Microsoft.AspNetCore.Http;
@@ -130,9 +132,12 @@ public class ExpenseController : ControllerBase
 
     //expense breakdown by category for a given month and year
     [HttpGet("breakdown/category")]
-    public async Task<IActionResult> GetExpenseBreakdownByCategory([FromQuery] Guid userId, [FromQuery] int year, [FromQuery] int month)
+    public async Task<IActionResult> GetExpenseBreakdownByCategory([FromQuery] CreateMonthlyReportRequest request)
     {
-        var result = await _expenseService.GetCategoryExpenseBreakdownAsync(userId, year, month);
+        var result = await _expenseService.GetCategoryExpenseBreakdownAsync(request.UserId, request.Year, request.Month);
+
+        if (!result.Any())
+            return NotFound("No expense breakdown found for the specified period.");
 
         return Ok(result);
     }
