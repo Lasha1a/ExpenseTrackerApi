@@ -1,4 +1,5 @@
-﻿using ExpenseTracker.Application.DTOs.UserDtos;
+﻿using Azure.Core;
+using ExpenseTracker.Application.DTOs.UserDtos;
 using ExpenseTracker.Application.Services.UserServices;
 using ExpenseTracker.Infrastructure.DataBase;
 using Microsoft.AspNetCore.Http;
@@ -53,20 +54,14 @@ public class UserController : ControllerBase
     }
     //login
     [HttpPost("login")]
-    public async Task<IActionResult> Login([FromBody]LoginRequest request)
+    public async Task<IActionResult> Login([FromBody] LoginRequest request)
     {
-        var user = await _userService.LoginAsync(request);
-        if (user == null)
+        var token = await _userService.LoginAsync(request);
+        if (token == null)
         {
             return Unauthorized("invalid email or password");
         }
-        return Ok(new
-        {
-            user.Id,
-            user.Email,
-            user.FullName,
-            user.CurrencyCode
-        });
+        return Ok(new { AccessToken = token });
 
     }
 

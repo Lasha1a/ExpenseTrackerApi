@@ -1,4 +1,5 @@
 ﻿using ExpenseTracker.Application.DTOs.UserDtos;
+using ExpenseTracker.Application.Interfaces.JwtSettings;
 using ExpenseTracker.Application.Interfaces.Repositories;
 using ExpenseTracker.Application.Interfaces.Security;
 using ExpenseTracker.Application.Specifications;
@@ -17,11 +18,13 @@ public class UserService
 {
     private readonly IRepository<User> _repository;
     private readonly IPasswordHasher _passwordHasher;
+    private readonly IJwtTokenGenerator _jwtTokenGenerator;
 
     public UserService(IRepository<User> repository, IPasswordHasher passwordHasher)
     {
         _repository = repository;
         _passwordHasher = passwordHasher;
+        _jwtTokenGenerator = _jwtTokenGenerator;
     }
 
     //add new user
@@ -47,18 +50,21 @@ public class UserService
     }
 
     //login
-    public async Task<User?> LoginAsync(LoginRequest request)
+    public async Task<string?> LoginAsync(LoginRequest request)
     {
         var spec = new UserByEmailSpec(request.Email);
 
         var users = await _repository.ListAsync(spec);
 
         var user = users.FirstOrDefault();
+
         if (user is null) 
             return null;
 
         var isValid = _passwordHasher.Verify(request.Password, user.PasswordHash);
+        if (!isValid)
+            return null;
 
-        return isValid ? user : null;
+        return _jwtTokenGenerator.GenerateToken(user.Id, user.Email, user.FullName);   
     }
 }

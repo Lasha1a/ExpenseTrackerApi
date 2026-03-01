@@ -4,12 +4,15 @@ using ExpenseTracker.Application.DTOs.ExpenseDtos;
 using ExpenseTracker.Application.DTOs.Reports;
 using ExpenseTracker.Application.Services.ExpenseServices;
 using ExpenseTracker.Infrastructure.DataBase;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Globalization;
 
 namespace ExpenseTrackerApi.Controllers;
 
+
+[Authorize]
 [Route("api/[controller]")]
 [ApiController]
 public class ExpenseController : ControllerBase

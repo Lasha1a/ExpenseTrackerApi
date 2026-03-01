@@ -2,11 +2,13 @@
 using ExpenseTracker.Application.DTOs.Reports;
 using ExpenseTracker.Application.Services.CategoryServices;
 using ExpenseTracker.Infrastructure.DataBase;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ExpenseTrackerApi.Controllers;
 
+[Authorize] // needs jwt token
 [Route("api/[controller]")]
 [ApiController]
 public class CategoryController : ControllerBase
