@@ -20,11 +20,11 @@ public class UserService
     private readonly IPasswordHasher _passwordHasher;
     private readonly IJwtTokenGenerator _jwtTokenGenerator;
 
-    public UserService(IRepository<User> repository, IPasswordHasher passwordHasher)
+    public UserService(IRepository<User> repository, IPasswordHasher passwordHasher, IJwtTokenGenerator jwtTokenGenerator)
     {
         _repository = repository;
         _passwordHasher = passwordHasher;
-        _jwtTokenGenerator = _jwtTokenGenerator;
+        _jwtTokenGenerator = jwtTokenGenerator;
     }
 
     //add new user
