@@ -1,6 +1,6 @@
 # ExpenseTracker API
 
-A simple backend **Expense Tracker API** built with **ASP.NET Core (.NET 9)** using **Clean Architecture** and common backend patterns. The project focuses on clean design, background processing, and real infrastructure setup.
+A backend **Expense Tracker API** built with **ASP.NET Core (.NET 9)** using **Clean Architecture**. This project was built as a hands-on backend engineering exercise covering everything from clean architecture patterns to real infrastructure like caching, background jobs, email delivery, and authentication.
 
 ---
 
@@ -8,20 +8,23 @@ A simple backend **Expense Tracker API** built with **ASP.NET Core (.NET 9)** us
 
 * **ASP.NET Core (.NET 9)**
 * **Entity Framework Core**
-* **PostgreSQL** (database)
-* **Redis** (caching)
-* **Docker & Docker Compose**
+* **PostgreSQL** — primary database
+* **Redis** — caching layer
+* **MailKit** — SMTP email sending
+* **FluentValidation** — request validation
+* **JWT Bearer** — authentication
+* **Docker & Docker Compose** — infrastructure setup
 
 ---
 
 ## 🧱 Architecture & Patterns
 
-The project follows **Clean Architecture** with clear separation of concerns:
+The project follows **Clean Architecture** with clear separation of concerns across four layers:
 
-* **Core** – domain entities
-* **Application** – DTOs, services, specifications
-* **Infrastructure** – EF Core, repositories, Redis, background workers
-* **API** – controllers and endpoints
+* **Core** — domain entities and base classes
+* **Application** — DTOs, services, interfaces, specifications, and validators
+* **Infrastructure** — EF Core, repositories, Redis, background workers, email, and JWT
+* **API** — controllers, endpoints, and dependency wiring
 
 Patterns used:
 
@@ -29,18 +32,23 @@ Patterns used:
 * **Specification Pattern** (filtering, sorting, pagination)
 * **Background Worker (BackgroundService)** for async jobs
 * **Cache-aside pattern** with Redis
+* **Soft Delete** — records are deactivated, not physically removed
 
 ---
 
-## ✨ Main Features
+## ✨ Features
 
-* CRUD for users, categories, and expenses
-* Expense filtering, sorting, and pagination
-* Monthly category budget tracking
-* Expense breakdown by category
-* CSV bulk import for expenses
-* Background report generation (async, non-blocking)
-* Redis caching for read-heavy endpoints
+* Full CRUD for users, categories, and expenses
+* Soft delete on categories with proper filtering
+* Expense filtering and pagination by category and page number
+* Monthly category budget tracking and status
+* Expense breakdown analytics by category
+* Background report generation — async and non-blocking
+* Background budget alert worker — runs every 10 minutes, triggers alerts at 80%+ budget usage
+* Redis caching with cache invalidation on updates and deletes
+* Email delivery via Gmail SMTP — reports sent directly to user's registered email
+* JWT authentication — protected endpoints require a valid Bearer token
+* FluentValidation on all request DTOs — clean 400 responses with readable error messages
 
 ---
 
@@ -52,56 +60,101 @@ Patterns used:
 docker compose up -d
 ```
 
----
-
 ### 2️⃣ Apply database migrations
 
+**Using Package Manager Console (Visual Studio):**
 ```powershell
 Update-Database
 ```
 
----
+**Using .NET CLI:**
+```bash
+dotnet ef database update --project ExpenseTracker.Infrastructure --startup-project ExpenseTrackerApi
+```
 
-### 3️⃣ Run the API
+### 3️⃣ Configure settings
+
+Make sure your `appsettings.json` has the following sections filled in:
+
+```json
+"ConnectionStrings": {
+  "DefaultConnection": "your-postgres-connection-string"
+},
+"Redis": {
+  "ConnectionString": "localhost:6379",
+  "InstanceName": "ExpenseTracker:"
+},
+"JwtSettings": {
+  "SecretKey": "your-secret-key-min-32-characters",
+  "Issuer": "ExpenseTrackerApi",
+  "Audience": "ExpenseTrackerApi",
+  "ExpiryMinutes": 60
+},
+"EmailSettings": {
+  "Host": "smtp.gmail.com",
+  "Port": 587,
+  "SenderEmail": "youremail@gmail.com",
+  "SenderName": "Expense Tracker",
+  "AppPassword": "your-gmail-app-password"
+}
+```
+
+> For Gmail SMTP, generate an **App Password** from your Google Account → Security → 2-Step Verification → App Passwords.
+
+### 4️⃣ Run the API
 
 ```bash
-dotnet run
+dotnet run --project ExpenseTrackerApi
 ```
 
 Open API UI:
-
 ```
 https://localhost:{PORT}/scalar
 ```
 
 ---
 
+## 🔐 Authentication
+
+All endpoints except `/api/User` (register/login) are protected with JWT.
+
+1. Register a user via `POST /api/User`
+2. Login via `POST /api/User/login` — you'll receive an `AccessToken`
+3. Add the token to the `Authorization` header as `Bearer <token>` on all subsequent requests
+
+---
+
 ## 📊 Background Jobs
 
-* Report jobs are stored in the database with status:
+Two background workers run automatically:
 
-  * `Pending → Processing → Completed`
-* A background worker processes jobs asynchronously
-* Generates `.txt` report files under:
+**ReportJobWorker** — picks up pending report jobs every minute:
+* `Pending → Processing → Completed`
+* Fetches the user's email from the database
+* Sends the report as an email via Gmail SMTP
 
-```
-ExpenseTrackerApi/Reports/
-```
+**BudgetAlertWorker** — runs every 10 minutes:
+* Checks all active categories with a defined monthly budget
+* If spending reaches 80% or more of the budget, a `BudgetAlert` record is created in the database
 
 ---
 
 ## ⚡ Redis Caching
 
-* Used to cache frequently requested data (e.g. expense lists)
-* Reduces database load
-* Improves response time
+* `GetById` responses for expenses and categories are cached for 5 minutes
+* Cache is invalidated automatically on update and delete operations
+* Reduces database load on read-heavy endpoints
 
 ---
 
-## 📝 Notes
+## ✅ Validation
 
-* Authentication is intentionally simple (no JWT)
-* Easily extendable with auth, emails, or more caching
+All request DTOs are validated using **FluentValidation**. Invalid requests return `400 Bad Request` with clear error messages before reaching the controller or service layer. Examples:
+
+* `ColorHex` must match `#RRGGBB` format
+* `ExpenseDate` cannot be in the future
+* `Month` must be between 1 and 12
+* `Year` must be between 2000 and the current year
 
 ---
 
